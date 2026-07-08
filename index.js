@@ -4,7 +4,7 @@ const { joinVoiceChannel } = require('@discordjs/voice');
 const client = new Client({ intents: [3276799] }); // Tüm izinleri açar
 
 client.once('ready', () => {
-    const channel = client.channels.cache.get("BURAYA_SES_KANALI_ID_YAZ");
+    const channel = client.channels.cache.get("1447158114376880188");
     if (channel) {
         joinVoiceChannel({
             channelId: channel.id,
