@@ -1,14 +1,13 @@
 {
-  "name": "discord-ses-botu",
+  "name": "bot",
   "version": "1.0.0",
-  "description": "Ses Botu",
   "main": "index.js",
+  "dependencies": {
+    "discord.js": "latest",
+    "express": "latest",
+    "@discordjs/voice": "latest"
+  },
   "scripts": {
     "start": "node index.js"
-  },
-  "dependencies": {
-    "discord.js": "^14.14.1",
-    "@discordjs/voice": "^0.16.1",
-    "libsodium-wrappers": "^0.7.13"
   }
 }
