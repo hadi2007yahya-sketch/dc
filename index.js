@@ -1,25 +1,27 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const { joinVoiceChannel } = require('@discordjs/voice');
-const client = new Client({ intents: [3276799] });
+const http = require('http');
+
+// 1. Port açma (Render'ı susturmak için)
+http.createServer((req, res) => {
+    res.write('Bot aktif');
+    res.end();
+}).listen(process.env.PORT || 3000);
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
 client.on('ready', () => {
-    console.log(`Giriş yapıldı: ${client.user.tag}`);
+    console.log("Bot giriş yaptı!");
     const channel = client.channels.cache.get("1447158114376880188");
-    
-    if (!channel) {
-        console.log("HATA: Kanalı bulamıyorum! Sunucuda mıyım? ID doğru mu?");
-        return;
-    }
-    
-    try {
+    if (channel) {
         joinVoiceChannel({
             channelId: channel.id,
             guildId: channel.guild.id,
             adapterCreator: channel.guild.voiceAdapterCreator,
         });
-        console.log("BAŞARILI: Kanala giriş yaptım.");
-    } catch (e) {
-        console.log("BAĞLANMA HATASI:", e);
+        console.log("Kanala girildi.");
+    } else {
+        console.log("Kanal bulunamadı.");
     }
 });
 
