@@ -1,41 +1,31 @@
+const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
+
+// Botu başlat
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.MessageContent
+    ] 
+});
+
+// Botun uyumaması için Express (Web sunucusu)
 const app = express();
 app.get('/', (req, res) => res.send('Bot aktif!'));
 app.listen(process.env.PORT || 3000);
-const { Client, GatewayIntentBits, ChannelType } = require('discord.js');
-const { joinVoiceChannel } = require('@discordjs/voice');
 
-const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates]
+// Bot hazır olduğunda
+client.once('ready', () => {
+    console.log(`${client.user.tag} olarak giriş yapıldı!`);
 });
 
-// BURAYA ID'LERİNİ YAZ
-const PARENT_VOICE_CHANNEL_ID = '1524385072570961920';
-const BOT_STAY_CHANNEL_ID = '1447158114376880188';
-
-client.once('ready', async () => {
-    console.log('Bot başarıyla aktif oldu!');
-    const channel = client.channels.cache.get(BOT_STAY_CHANNEL_ID);
-    if (channel) {
-        joinVoiceChannel({
-            channelId: channel.id,
-            guildId: channel.guild.id,
-            adapterCreator: channel.guild.voiceAdapterCreator,
-        });
+// Buraya kendi komutlarını ekleyebilirsin
+client.on('messageCreate', (message) => {
+    if (message.content === '!ping') {
+        message.reply('Pong!');
     }
 });
 
-client.on('voiceStateUpdate', async (oldState, newState) => {
-    if (newState.channelId === PARENT_VOICE_CHANNEL_ID) {
-        const member = newState.member;
-        const guild = newState.guild;
-        const newChannel = await guild.channels.create({
-            name: `🔊 ${member.displayName} Odası`,
-            type: ChannelType.GuildVoice,
-            parent: newState.channel.parent
-        });
-        member.voice.setChannel(newChannel);
-    }
-});
-
-client.login('');
+// TOKEN kısmı asla buraya yazılmaz, Render'daki Environment'tan çeker
+client.login(process.env.TOKEN);
