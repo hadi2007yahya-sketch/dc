@@ -1,11 +1,10 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const { joinVoiceChannel } = require('@discordjs/voice');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
-const KANAL_ID = "BURAYA_SES_KANALI_ID_YAZ";
+const client = new Client({ intents: [3276799] }); // Tüm izinleri açar
 
 client.once('ready', () => {
-    const channel = client.channels.cache.get(KANAL_ID);
+    const channel = client.channels.cache.get("BURAYA_SES_KANALI_ID_YAZ");
     if (channel) {
         joinVoiceChannel({
             channelId: channel.id,
